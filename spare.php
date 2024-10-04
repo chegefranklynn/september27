@@ -36,5 +36,33 @@
    // } else {
         //echo "Error: " . $stmt->error;
     //}
+    // $check_stmt = $conn->prepare("SELECT * FROM auth WHERE email = ?");
+   // $check_stmt->bind_param("s", $email);
+    //$check_stmt->execute();
+    //$result = $check_stmt->get_result();
+    
+    //if ($result->num_rows > 0) {
+      //  echo "This email is already registered. Please use a different email.";
+    //} else {
+        // Insert user into the database
+      //  $insert_stmt = $conn->prepare("INSERT INTO auth (username, email, password, role) VALUES (?, ?, ?, ?)");
+        
+        //if ($insert_stmt === false) {
+            die("Error preparing statement: " . $conn->error);
+        //}
+        
+        //$insert_stmt->bind_param("ssss", $username, $email, $password, $role);
+        
+        //if ($insert_stmt->execute()) {
+         //   header("Location: login.php");
+           // exit();
+        //} else {
+          //  echo "Error: " . $insert_stmt->error;
+        //}
+        
+        //$insert_stmt->close();
+    //}
+    
+    //$check_stmt->close();
 //}
-?>
+
