@@ -38,6 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         echo "No user found with that email.";
-    }
+    }  
 }
-?>
+// Logout function
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: index.html");
+    exit;
+}
+

@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $role = isset($_POST['role']) ? $_POST['role'] : 'client';
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
     
     // Check if email already exists
     $check_stmt = $conn->prepare("SELECT * FROM auth WHERE email = ?");
@@ -40,4 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $check_stmt->close();
 }
+
+
 // ... existing code ...

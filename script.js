@@ -17,3 +17,6 @@ document.getElementById('show-login-reset').addEventListener('click', function()
     document.getElementById('reset-password-form').style.display = 'none';
     document.getElementById('login-form').style.display = 'block';
 });
+
+document.getElementById('logout-btn').addEventListener('click', function()
+ { window.location.href = 'login.php?logout=true'; });
