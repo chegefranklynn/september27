@@ -1,49 +1,28 @@
-<?php
-session_start();
-require 'database.php'; // Include your database connection
+   <?php 
+   session_start();
+  include 'includes/header.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $stmt = $conn->prepare("SELECT * FROM auth WHERE email=?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    
-    if ($result->num_rows > 0) {
-        $role = $result->fetch_assoc();
-
-      //  echo "Stored hash: " . $user['password'] . "<br>";
-      //  echo "Entered password (plain): " . $password . "<br>";
-        
-        if (password_verify($password, $role['password'])) {
-            if ($role['role'] == "admin") {
-                $_SESSION['user_id'] = $role['id'];
-                $_SESSION['role'] = $role['role'];
-                header("Location:ADMIN/dashboard.php");
-                exit();
-            } else {
-                if ($role['role'] == "client") {
-                    $_SESSION['user_id'] = $role['id'];
-                    $_SESSION['role'] = $role['role'];
-                    header("Location:landing.php");
-                    exit();
-                }
-               // echo "Please verify your email before logging in.";
+   ?>
+   <div class="container">
+        <div id="login-form" class="form">
+            <h2>Login</h2>
+            <?php
+            if (isset($_SESSION['error'])) {
+                echo "<p style='color: red;'>" . $_SESSION['error'] . "</p>";
+                unset($_SESSION['error']);
             }
-        } else {
-            echo "Invalid password.";
-        }
-    } else {
-        echo "No user found with that email.";
-    }  
-}
-// Logout function
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header("Location: index.html");
-    exit;
-}
-
+            if (isset($_SESSION['success'])) {
+                echo "<p style='color: green;'>" . $_SESSION['success'] . "</p>";
+                unset($_SESSION['success']);
+            }
+            ?>
+            <form id="login" method="POST" action="code.php">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <p><a href="register.php" id="show-register">Don't have an account? Register</a></p>
+                <p><a href="#" id="forgot-password">Forgot Password?</a></p>
+            </form> 
+        </div>
+    </div>
+    <script src="script.js"></script>

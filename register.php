@@ -1,45 +1,37 @@
-<?php
+<?php 
+
 session_start();
-require 'database.php'; // Include your database connection
-//How to give written access in github
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $role = isset($_POST['role']) ? $_POST['role'] : 'client';
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
-    
-    // Check if email already exists
-    $check_stmt = $conn->prepare("SELECT * FROM auth WHERE email = ?");
-    $check_stmt->bind_param("s", $email);
-    $check_stmt->execute();
-    $result = $check_stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        echo "This email is already registered. Please use a different email.";
-        //header("location:reset_password");
-        exit();
-    } else {
-        // Insert user into the database
-        $insert_stmt = $conn->prepare("INSERT INTO auth (username, email, password, role) VALUES (?, ?, ?, ?)");
-        
-        if ($insert_stmt === false) {
-            die("Error preparing statement: " . $conn->error);
-        }
-        
-        $insert_stmt->bind_param("ssss", $username, $email, $password, $role);
-        
-        if ($insert_stmt->execute()) {
-            header("Location: index.html");
-            exit();
-        } else {
-            echo "Error: " . $insert_stmt->error;
-        }
-        
-        $insert_stmt->close();
-    }
-    
-    $check_stmt->close();
-}
+include 'includes/header.php';
+?>
 
-
-// ... existing code ...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="register-form" class="form">
+            <h2>Register</h2>
+            <?php
+            if (isset($_SESSION['error'])) {
+                echo "<p style='color: red;'>" . $_SESSION['error'] . "</p>";
+                unset($_SESSION['error']);
+            }
+            ?>
+            <form id="register" method="POST" action="code.php">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+                <p><a href="login.php" id="show-login">Already have an account? Login</a></p>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
